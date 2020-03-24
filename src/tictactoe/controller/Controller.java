@@ -3,18 +3,16 @@ package tictactoe.controller;
 
 import tictactoe.model.Model;
 import tictactoe.model.Peg;
+import tictactoe.model.TicTacToe;
 
 public class Controller {
     Model model;
+    TicTacToe t;
 
-    public Controller(Model model){
+    public Controller(Model model, TicTacToe tictactoe){
 
         this.model=model;
-        startupAnimation();
-    }
-    public void startupAnimation(){
-
-        setupBoard();
+        this.t=tictactoe;
     }
 
 
@@ -27,10 +25,14 @@ public class Controller {
     public void nextTurn(Peg peg){
 
         if(model.nextTurn() % 2 == 0){
-            peg.setWhite();
+            peg.setO();
+            //change model
+            //change view when state in model changes
         }
         else {
-            peg.setBlack();
+            peg.setX();
+            //change model
+            //change view when state in model changes
         }
     }
 

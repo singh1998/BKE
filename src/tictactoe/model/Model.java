@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 
 import java.util.Random;
 
-public abstract class Model {
+public  class Model {
     private int turn = 1;
     private Peg[][] pegs = new Peg[3][3];
 

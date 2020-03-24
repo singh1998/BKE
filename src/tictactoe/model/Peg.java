@@ -7,8 +7,8 @@ import javafx.scene.control.Button;
 
 public class Peg extends Button {
     //0 == empty
-    //1 == black
-    //2 == white
+    //1 == O
+    //2 == X
     public int pegState;
     Image image;
     int x;
@@ -29,7 +29,7 @@ public class Peg extends Button {
         return z;
     }
 
-    public void setBlack(){
+    public void setO(){
         image = new Image("tictactoe/view/style/o.gif");
         ImageView imageView = new ImageView(image);
         imageView.smoothProperty().set(true);
@@ -41,7 +41,7 @@ public class Peg extends Button {
     }
 
 
-    public void setWhite(){
+    public void setX(){
         image = new Image("tictactoe/view/style/x.gif");
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(80);

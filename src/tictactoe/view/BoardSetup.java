@@ -1,5 +1,6 @@
 package tictactoe.view;
 
+import com.sun.scenario.effect.Blend;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -26,7 +27,7 @@ public class BoardSetup extends Application {
     public void start(Stage primaryStage){
 
 
-        controller=new Controller(new TicTacToe());
+        controller=new Controller(new Model(),new TicTacToe());
 
 
 
