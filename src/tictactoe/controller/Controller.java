@@ -1,18 +1,16 @@
 package tictactoe.controller;
 
 
-import tictactoe.model.Model;
 import tictactoe.model.Peg;
-import tictactoe.model.TicTacToe;
+import tictactoe.model.Model;
 
 public class Controller {
     Model model;
-    TicTacToe t;
 
-    public Controller(Model model, TicTacToe tictactoe){
 
-        this.model=model;
-        this.t=tictactoe;
+    public Controller(Model model) {
+
+        this.model = model;
     }
 
 
@@ -40,6 +38,11 @@ public class Controller {
 
         return model.get_pegs();
     }
-
+    public boolean gameover(){
+        return model.gameOver();
+    }
+    public String getWinner(){
+        return model.winner();
+    }
 
 }

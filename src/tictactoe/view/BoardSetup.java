@@ -1,33 +1,32 @@
 package tictactoe.view;
 
-import com.sun.scenario.effect.Blend;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.Border;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import tictactoe.controller.Controller;
 import tictactoe.model.Model;
 import tictactoe.model.Peg;
-import tictactoe.model.TicTacToe;
 
-import java.awt.*;
+
+
 
 
 public class BoardSetup extends Application {
     private GridPane gridPane=new GridPane();
     private Label text=new Label();
-    private VBox vBox=new VBox();
+    private VBox vBox=new VBox(text,gridPane);
     private Controller controller;
 
 
     public void start(Stage primaryStage){
 
 
-        controller=new Controller(new Model(),new TicTacToe());
+        controller=new Controller(new Model());
 
 
 
@@ -43,7 +42,8 @@ public class BoardSetup extends Application {
                     gridPane.add(peg, peg.getXPosition(), peg.getZPosition());
             }
         }
-        Scene scene = new Scene(gridPane);
+
+        Scene scene = new Scene(vBox);
         scene.getStylesheets().add("tictactoe/view/style/style.css");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
