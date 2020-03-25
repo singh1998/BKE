@@ -64,7 +64,8 @@ public class Model
     //state vor mode
     public  static final int HUMAN_VS_HUMAN   = 0;
     public  static final int HUMAN_VS_AI         = 1;
-    public  static final int AI_VS_AI      = 2;
+    public  static final int AI_VS_SERVER      = 2;
+    public  static final int HUMAN_VS_SERVER         = 3;
     public int mode=HUMAN_VS_AI;
 
 
@@ -73,19 +74,22 @@ public class Model
 
 
 
-    //return true if human plays vs ai
+    //return true if human plays vs (local) ai
     public boolean human_vs_ai(){
         return mode==HUMAN_VS_AI;
     }
-    //return true if human plays vs ai
+    //return true if human plays vs human
     public boolean human_vs_human(){
         return mode==HUMAN_VS_HUMAN;
     }
-    //return true if human plays vs ai
-    public boolean ai_vs_ai(){
-        return mode==AI_VS_AI;
+    //return true if human plays vs server
+    public boolean ai_vs_server(){
+        return mode==AI_VS_SERVER;
     }
-
+    //return true if human plays vs server
+    public boolean human_vs_server(){
+        return mode==HUMAN_VS_SERVER;
+    }
 
 
     public void playMove(int move){
