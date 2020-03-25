@@ -26,7 +26,7 @@ public class BoardSetup extends Application {
     public void start(Stage primaryStage){
 
 
-        controller=new Controller(new Model());
+        controller=new Controller(new Model(this));
 
 
 
@@ -36,6 +36,7 @@ public class BoardSetup extends Application {
                 peg.setOnAction(
                         actionEvent -> {
                             Platform.runLater( ()-> {
+
                                 controller.nextTurn(peg);
                             } );
                         });
@@ -47,10 +48,13 @@ public class BoardSetup extends Application {
         scene.getStylesheets().add("tictactoe/view/style/style.css");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-        primaryStage.setTitle("Reversi");
+        primaryStage.setTitle("TicTacToe");
         primaryStage.sizeToScene();
         primaryStage.show();
 
+    }
+    public void setText(String s){
+        this.text.setText(s);
     }
 
 

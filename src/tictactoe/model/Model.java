@@ -1,10 +1,16 @@
 package tictactoe.model;
+import javafx.application.Platform;
+import tictactoe.view.BoardSetup;
+
 import java.util.Random;
 
 public class Model
-        //The tictactoe ai logic is in here but also the game logic itself
+        //The tictactoe logic
 {
-    private int turn = 1;
+    private TicTacToeAI AI=new TicTacToeAI();
+    private BoardSetup view;
+    private int turn = 0;
+    //gui board
     private Peg[][] pegs = new Peg[3][3];
 
     public void fill_pegs() {
@@ -19,20 +25,25 @@ public class Model
     }
 
     public int nextTurn() {
+
         int t = turn;
         turn += 1;
         return t;
     }
 
     //Model
-    public Model() {
+    public Model(BoardSetup view) {
+        this.view=view;
         fill_pegs();
         clearBoard( );
-        initSide();
+
     }
 
     public Peg[][] get_pegs() {
         return pegs;
+    }
+    public TicTacToeAI getAI(){
+        return AI;
     }
 
 
@@ -40,70 +51,65 @@ public class Model
     private static final int PLAYER2     = 1;
     public  static final int EMPTY        = 2;
 
+
+    //name to be logged in with
+    String player1_name;
+    String player2_name;
+
     public  static final int PLAYER1_WIN    = 0;
     public  static final int DRAW         = 1;
     public  static final int UNCLEAR      = 2;
     public  static final int PLAYER2_WIN = 3;
 
-    private int [ ] [ ] board = new int[ 3 ][ 3 ];
-    private Random random=new Random();
-    private int side=random.nextInt(2);
+    //state vor mode
+    public  static final int HUMAN_VS_HUMAN   = 0;
+    public  static final int HUMAN_VS_AI         = 1;
+    public  static final int AI_VS_AI      = 2;
+    public int mode=HUMAN_VS_AI;
+
+
     private int position=UNCLEAR;
-    private char computerChar,humanChar;
 
 
 
-    private void initSide()
-    {
-        if (this.side==PLAYER2) { computerChar='X'; humanChar='O'; }
-        else                     { computerChar='O'; humanChar='X'; }
-    }
 
-    public void setPlayer1Plays()
-    {
-        this.side=PLAYER1;
-        initSide();
-    }
-
-    public void setPlayer2Plays()
-    {
-        this.side=PLAYER2;
-        initSide();
+    //return true if human plays vs ai
+    public boolean human_vs_ai(){
+        return mode==HUMAN_VS_AI;
     }
 
 
 
+    public void playMove(int move){
+        Peg peg=pegs[move/3 ][ move%3 ];
+        peg.setX();
 
-
+    }
 
 
     //check if move ok
     public boolean moveOk(int move)
     {
-        return ( move>=0 && move <=8 && board[move/3 ][ move%3 ] == EMPTY );
+        return ( move>=0 && move <=8 && pegs[move/3 ][ move%3 ].pegState == EMPTY );
 
     }
 
-    // play move
-    public void playMove(int move)
-    {
-        board[move/3][ move%3] = this.side;
-        if (side==PLAYER2) this.side=PLAYER1;  else this.side=PLAYER2;
-    }
+
 
 
     // Simple supporting routines
-    private void clearBoard( )
+    public void clearBoard( )
     {
         for(int row=0;row<3;row++) {
             for(int col=0;col<3;col++) {
                 place(row,col,EMPTY);
+                pegs[row][col].setDisable(false);
             }
         }
     }
 
 
-    private boolean boardIsFull( )
+    private boolean pegsIsFull( )
     {
 
         for(int row=0;row<3;row++) {
@@ -120,22 +126,22 @@ public class Model
     {
         //sides:
         //top
-        if ((side == board[0][0]) && (side == board[0][1])&& (side == board[0][2])) {
+        if ((side == pegs[0][0].pegState) && (side == pegs[0][1].pegState)&& (side == pegs[0][2].pegState)) {
             return true;
 
         }
         //bottom
-        if ((side == board[2][0]) && (side == board[2][1])&& (side == board[2][2])) {
+        if ((side == pegs[2][0].pegState) && (side == pegs[2][1].pegState)&& (side == pegs[2][2].pegState)) {
             return true;
 
         }
         //left
-        if ((side == board[0][0]) && (side == board[1][0])&& (side == board[2][0])) {
+        if ((side == pegs[0][0].pegState) && (side == pegs[1][0].pegState)&& (side == pegs[2][0].pegState)) {
             return true;
 
         }
         //right
-        if ((side == board[0][2]) && (side == board[1][2])&& (side == board[2][2])) {
+        if ((side == pegs[0][2].pegState) && (side == pegs[1][2].pegState)&& (side == pegs[2][2].pegState)) {
             return true;
 
         }
@@ -143,24 +149,24 @@ public class Model
 
         //middle:
         //horizontal
-        if ((side == board[1][0]) && (side == board[1][1])&& (side == board[1][2])) {
+        if ((side == pegs[1][0].pegState) && (side == pegs[1][1].pegState)&& (side == pegs[1][2].pegState)) {
             return true;
 
         }
         //vertical
-        if ((side == board[0][1]) && (side == board[1][1])&& (side == board[2][1])) {
+        if ((side == pegs[0][1].pegState) && (side == pegs[1][1].pegState)&& (side == pegs[2][1].pegState)) {
             return true;
 
         }
 
 
         //diagonal bottom left corner to top right
-        if ((side == board[2][0]) && (side == board[1][1])&& (side == board[0][2])) {
+        if ((side == pegs[2][0].pegState) && (side == pegs[1][1].pegState)&& (side == pegs[0][2].pegState)) {
             return true;
 
         }
         //diagonal bottom right corner to top left
-        if ((side == board[2][2]) && (side == board[1][1])&& (side == board[0][0])) {
+        if ((side == pegs[2][2].pegState) && (side == pegs[1][1].pegState)&& (side == pegs[0][0].pegState)) {
 
             return true;
         }
@@ -171,12 +177,15 @@ public class Model
     // Play a move, possibly clearing a square
     private void place( int row, int column, int piece )
     {
-        board[ row ][ column ] = piece;
+        Platform.runLater(()-> {
+                    pegs[row][column].pegState = piece;
+                }
+        );
     }
 
     private boolean squareIsEmpty( int row, int column )
     {
-        return board[ row ][ column ] == EMPTY;
+        return pegs[ row ][ column ].pegState == EMPTY;
     }
 
     // Compute static value of current position (win, draw, etc.)
@@ -185,7 +194,7 @@ public class Model
 
         boolean human_win=isAWin(PLAYER1);
         boolean computer_win=isAWin(PLAYER2);
-        boolean is_full=boardIsFull();
+        boolean is_full=pegsIsFull();
         if ((is_full && !computer_win) && (!human_win)){
             return DRAW;
         }
@@ -204,31 +213,46 @@ public class Model
     }
 
 
-    public String toString()
-    {
-        String drawnboard="";
+
+
+
+
+
+    public void disable_pegs(){
         for(int row=0;row<3;row++) {
             for(int col=0;col<3;col++) {
-                int symbol=board[row][col];
-                if(symbol==PLAYER2){
-                    drawnboard+=computerChar+" ";
-                }
-                else if(symbol==PLAYER1){
-                    drawnboard+=humanChar+" ";
-                }
-                else{
-                    drawnboard+=". ";
-                }
+                pegs[row][col].setDisable(true);
             }
-            drawnboard+="\r\n";
-
         }
-        return drawnboard;
     }
+    private class Best
+    {
+        int row;
+        int column;
+        int val;
+
+        public Best( int v )
+        { this( v, 0, 0 ); }
+
+        public Best( int v, int r, int c )
+        { val = v; row = r; column = c; }
+    }
+
+
 
     public boolean gameOver()
     {
         this.position=positionValue();
+        if(position!=UNCLEAR){
+            Platform.runLater(()-> {
+                if (position == DRAW) {
+
+                    view.setText(" It's a draw, " + winner() + " wins!");
+                } else {
+                    view.setText(" Match over, " + winner() + " wins!");
+                }
+            } );
+        }
         return this.position!=UNCLEAR;
     }
 

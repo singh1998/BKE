@@ -6,9 +6,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 
 public class Peg extends Button {
-    //0 == empty
-    //1 == O
-    //2 == X
+    //2 == empty
+    //0 == O
+    //1 == X
     public int pegState;
     Image image;
     int x;
@@ -37,7 +37,7 @@ public class Peg extends Button {
         imageView.setFitHeight(80);
         setGraphic(imageView);
         setDisable(true);
-        pegState = 1;
+        pegState = 0;
     }
 
 
@@ -48,11 +48,11 @@ public class Peg extends Button {
         imageView.setFitHeight(80);
         setGraphic(imageView);
         setDisable(true);
-        pegState = 2;
+        pegState = 1;
     }
     public void reset(){
         setGraphic(null);
         setDisable(false);
-        pegState = 0;
+        pegState = 2;
     }
 }
