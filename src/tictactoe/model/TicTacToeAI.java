@@ -1,7 +1,7 @@
 package tictactoe.model;
 
 public class TicTacToeAI {
-
+    private Model model;
 
 
     private static final int OPPONENT        = 0;
@@ -17,7 +17,9 @@ public class TicTacToeAI {
 
 
     // Constructor
-    public TicTacToeAI( ) {
+    public TicTacToeAI( Model model) {
+        this.model=model;
+
         //fill EMPTY into all places the the board
         clearBoard();
 
@@ -29,6 +31,7 @@ public class TicTacToeAI {
         //while game has not ended{
 
         //fill  the current board, retrieved from the server into board[3][3]
+        //update the view from the server
         fillBoard("");
         //return chooseMove ()
         System.out.println(chooseMove());
@@ -37,6 +40,7 @@ public class TicTacToeAI {
        //}
         //***********AI BEHAVIOUR*************
     }
+    //example function
     public void fillBoard(String board){
         //clear previous board
         clearBoard();
@@ -271,7 +275,5 @@ public class TicTacToeAI {
         public Best( int v, int r, int c )
         { val = v; row = r; column = c; }
     }
-    public static void main(String [] args){
-        TicTacToeAI AI=new TicTacToeAI();
-    }
+
 }

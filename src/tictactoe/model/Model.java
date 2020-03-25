@@ -7,7 +7,7 @@ import java.util.Random;
 public class Model
         //The tictactoe logic
 {
-    private TicTacToeAI AI=new TicTacToeAI();
+    private TicTacToeAI AI=new TicTacToeAI(this);
     private BoardSetup view;
     private int turn = 0;
     //gui board
