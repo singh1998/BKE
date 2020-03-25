@@ -32,10 +32,13 @@ public class TicTacToeAI {
 
         //fill  the current board, retrieved from the server into board[3][3]
         //update the view from the server
+        //model.place()
         fillBoard("");
         //return chooseMove ()
         System.out.println(chooseMove());
         //play the move on the server
+        //update the view from the server
+        //model.place()
 
        //}
         //***********AI BEHAVIOUR*************
