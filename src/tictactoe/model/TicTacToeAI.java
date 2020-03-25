@@ -20,47 +20,9 @@ public class TicTacToeAI {
     public TicTacToeAI( Model model) {
         this.model=model;
 
-        //fill EMPTY into all places the the board
-        clearBoard();
-
-        //***********AI BEHAVIOUR*************
-
-        //login as a player on the server
-
-
-        //while game has not ended{
-
-        //fill  the current board, retrieved from the server into board[3][3]
-        //update the view from the server
-        //model.place()
-        fillBoard("");
-        //return chooseMove ()
-        System.out.println(chooseMove());
-        //play the move on the server
-        //update the view from the server
-        //model.place()
-
-       //}
-        //***********AI BEHAVIOUR*************
     }
-    //example function
-    public void fillBoard(String board){
-        //clear previous board
-        clearBoard();
 
-        //board[][]= //load new board from server
-        //LOAD THE CORRECT value with the symbol: AI or OPPONENT!!!
-
-        //example:
-        //board
-        //AI pawn
-        this.board[0][1]=AI;
-        this.board[0][0]=AI;
-        //choosemove returns 2 because that way te AI will win instantly
-    }
-    //filboard above is example
-    //this is really the fillboard
-    //convert the gui to board begs
+    //Method to convert the GUI pegs to a board array
     public void pegs_to_board(Peg[][] pegs){
         clearBoard();
         for(int row=0;row<3;row++) {
@@ -258,12 +220,6 @@ public class TicTacToeAI {
 
 
     }
-
-
-
-
-
-
 
 
     private class Best

@@ -31,11 +31,27 @@ public class Model
         return t;
     }
 
+
     //Model
     public Model(BoardSetup view) {
         this.view=view;
         fill_pegs();
         clearBoard( );
+
+    }
+
+    public void switch_gamemode(int gamemode){
+        mode=gamemode;
+        clearBoard();
+        turn=0;
+        if(mode==IDLE || mode==AI_VS_SERVER){
+            disable_pegs();
+        }
+        else {
+            enable_pegs();
+        }
+
+
 
     }
 
@@ -62,18 +78,22 @@ public class Model
     public  static final int PLAYER2_WIN = 3;
 
     //state vor mode
+    public  static final int IDLE  = -1;
     public  static final int HUMAN_VS_HUMAN   = 0;
     public  static final int HUMAN_VS_AI         = 1;
     public  static final int AI_VS_SERVER      = 2;
     public  static final int HUMAN_VS_SERVER         = 3;
-    public int mode=HUMAN_VS_AI;
+
+    public int mode=IDLE;
 
 
     private int position=UNCLEAR;
 
 
-
-
+    //return true if there will be no match
+    public boolean idle(){
+        return mode==IDLE;
+    }
     //return true if human plays vs (local) ai
     public boolean human_vs_ai(){
         return mode==HUMAN_VS_AI;
@@ -82,7 +102,7 @@ public class Model
     public boolean human_vs_human(){
         return mode==HUMAN_VS_HUMAN;
     }
-    //return true if human plays vs server
+    //return true if ai plays vs server
     public boolean ai_vs_server(){
         return mode==AI_VS_SERVER;
     }
@@ -228,6 +248,13 @@ public class Model
         for(int row=0;row<3;row++) {
             for(int col=0;col<3;col++) {
                 pegs[row][col].setDisable(true);
+            }
+        }
+    }
+    public void enable_pegs(){
+        for(int row=0;row<3;row++) {
+            for(int col=0;col<3;col++) {
+                pegs[row][col].setDisable(false);
             }
         }
     }

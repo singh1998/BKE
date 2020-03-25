@@ -8,42 +8,66 @@ import tictactoe.model.TicTacToeAI;
 
 public class Controller {
 
+
     Model model;
 
 
     public Controller(Model model) {
 
         this.model = model;
+        //At startup no square can be filled
+        //model.switch_gamemode(Model.IDLE);
+        model.switch_gamemode(Model.HUMAN_VS_AI);
     }
 
 
-    private void setupBoard(){
 
-
-    }
 
 
     public void nextTurn(Peg peg){
+        TicTacToeAI AI=null;
+        int best=0;
+        if(!model.human_vs_human()) {
+            //let the AI decide
+            AI = model.getAI();
+            AI.pegs_to_board(model.get_pegs());
+            best = AI.chooseMove();
+        }
 
         if(model.nextTurn() % 2 == 0){
 
-            peg.setO();
-            //check if ai must play
-            if(model.human_vs_ai()){
-                nextTurn(peg);
-            }
 
+
+
+            //check if ai must play
+            if(model.human_vs_ai()) {
+                peg.setO();
+                nextTurn(peg);
+
+            }
+            else if(model.human_vs_server()){
+
+            }
+            else if(model.ai_vs_server()){
+
+            }
+            else{
+                peg.setO();
+            }
         }
         else {
             //check if ai must play
             if(model.human_vs_ai()) {
-                //let the AI decide
-                TicTacToeAI AI=model.getAI();
-                AI.pegs_to_board(model.get_pegs());
-                int best=AI.chooseMove();
                 model.playMove(best);
 
-            } else{
+            }
+            else if(model.human_vs_server()){
+
+            }
+            else if(model.ai_vs_server()){
+
+            }
+            else{
                 peg.setX();
             }
 
@@ -68,7 +92,9 @@ public class Controller {
     public void disable_pegs(){
         model.disable_pegs();
     }
-
+    public void enable_pegs(){
+        model.enable_pegs();
+    }
     public void clear_board(){
         model.clearBoard();
     }

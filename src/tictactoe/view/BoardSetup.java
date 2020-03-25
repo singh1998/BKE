@@ -33,6 +33,9 @@ public class BoardSetup extends Application {
         for(int i = 0;i < 3;i++) {
             for (int o = 0; o < 3; o++) {
                 Peg peg=controller.get_pegs()[i][o];
+
+
+
                 peg.setOnAction(
                         actionEvent -> {
                             Platform.runLater( ()-> {
