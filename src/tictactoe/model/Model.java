@@ -77,6 +77,14 @@ public class Model
     public boolean human_vs_ai(){
         return mode==HUMAN_VS_AI;
     }
+    //return true if human plays vs ai
+    public boolean human_vs_human(){
+        return mode==HUMAN_VS_HUMAN;
+    }
+    //return true if human plays vs ai
+    public boolean ai_vs_ai(){
+        return mode==AI_VS_AI;
+    }
 
 
 
