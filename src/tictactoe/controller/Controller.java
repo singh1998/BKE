@@ -17,6 +17,9 @@ public class Controller {
         this.model = model;
         //At startup no square can be filled
         //model.switch_gamemode(Model.IDLE);
+        //human vs human
+        //model.switch_gamemode(Model.HUMAN_VS_HUMAN);
+        //human vs ai
         model.switch_gamemode(Model.HUMAN_VS_AI);
 
     }
