@@ -1,14 +1,16 @@
 package tictactoe.model;
 
+import java.util.Arrays;
+
 public class TicTacToeAI {
-    private Model model;
 
 
-    private static final int OPPONENT        = 0;
+
+    private static final int PLAYER        = 0;
     private static final int AI     = 1;
     public  static final int EMPTY        = 2;
 
-    public  static final int OPPONENT_WIN    = 0;
+    public  static final int PLAYER_WIN   = 0;
     public  static final int DRAW         = 1;
     public  static final int UNCLEAR      = 2;
     public  static final int AI_WIN = 3;
@@ -17,25 +19,33 @@ public class TicTacToeAI {
 
 
     // Constructor
-    public TicTacToeAI( Model model) {
-        this.model=model;
+    public TicTacToeAI( ) {
+
 
     }
 
+
+
+
     //Method to convert the GUI pegs to a board array
     public void pegs_to_board(Peg[][] pegs){
+
         clearBoard();
         for(int row=0;row<3;row++) {
             for(int col=0;col<3;col++) {
-                board[row][col]=pegs[row][col].pegState;
+
+              board[row][col]=pegs[row][col].pegState;
             }
         }
+
+
     }
 
 
 
     public int chooseMove()
     {
+
         Best best=chooseMove(AI);
         return best.row*3+best.column;
 
@@ -60,7 +70,7 @@ public class TicTacToeAI {
             return new Best( simpleEval );
 
         if(side==AI){
-            opp=OPPONENT;
+            opp=PLAYER;
             value=-1000;
             for(int row=0;row<3;row++) {
                 for(int col=0;col<3;col++) {
@@ -107,7 +117,17 @@ public class TicTacToeAI {
 
     }
 
+    public void printBoard() {
+        String s = "";
 
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                s += board[row][col];
+            }
+            s+="\r\n";
+        }
+
+    }
 
 
     // Simple supporting routines
@@ -201,22 +221,20 @@ public class TicTacToeAI {
     private int positionValue( )
     {
 
-        boolean human_win=isAWin(OPPONENT);
+        boolean player_win=isAWin(PLAYER);
         boolean computer_win=isAWin(AI);
         boolean is_full=boardIsFull();
-        if ((is_full && !computer_win) && (!human_win)){
+        if ((is_full && !computer_win) && (!player_win)){
             return DRAW;
         }
         else if(computer_win){
             return AI_WIN;
         }
-        else if(human_win){
-            return OPPONENT_WIN;
+        else if(player_win){
+            return PLAYER_WIN;
         } else {
             return UNCLEAR;
         }
-
-
 
 
     }

@@ -4,7 +4,7 @@ package tictactoe.controller;
 
 import tictactoe.model.Peg;
 import tictactoe.model.Model;
-import tictactoe.model.TicTacToeAI;
+
 
 public class Controller {
 
@@ -18,6 +18,7 @@ public class Controller {
         //At startup no square can be filled
         //model.switch_gamemode(Model.IDLE);
         model.switch_gamemode(Model.HUMAN_VS_AI);
+
     }
 
 
@@ -25,53 +26,29 @@ public class Controller {
 
 
     public void nextTurn(Peg peg){
-        TicTacToeAI AI=null;
-        int best=0;
-        if(!model.human_vs_human()) {
-            //let the AI decide
-            AI = model.getAI();
-            AI.pegs_to_board(model.get_pegs());
-            best = AI.chooseMove();
-        }
+        if(model.human_vs_ai()){
 
-        if(model.nextTurn() % 2 == 0){
+            model.playMove(peg.getXPosition()*3+peg.getZPosition());
+            model.playMove(getBest());
 
-
-
-
-            //check if ai must play
-            if(model.human_vs_ai()) {
-                peg.setO();
-                nextTurn(peg);
-
-            }
-            else if(model.human_vs_server()){
-
-            }
-            else if(model.ai_vs_server()){
-
-            }
-            else{
-                peg.setO();
-            }
-        }
-        else {
-            //check if ai must play
-            if(model.human_vs_ai()) {
-                model.playMove(best);
-
-            }
-            else if(model.human_vs_server()){
-
-            }
-            else if(model.ai_vs_server()){
-
-            }
-            else{
-                peg.setX();
-            }
 
         }
+        else if(model.human_vs_human()){
+            model.playMove(peg.getXPosition()*3+peg.getZPosition());
+        }
+        else if(model.human_vs_server()){
+
+            //play on the server
+            //update model
+            model.playMove(peg.getXPosition()*3+peg.getZPosition());
+            //receive opponents result and play the same move on the model
+        }
+        //game is idle and cannot reach this whole method
+        else{
+
+        }
+
+
         if(gameOver()){
 
             disable_pegs();
@@ -86,9 +63,6 @@ public class Controller {
     public boolean gameOver(){
         return model.gameOver();
     }
-    public String getWinner(){
-        return model.winner();
-    }
     public void disable_pegs(){
         model.disable_pegs();
     }
@@ -97,5 +71,8 @@ public class Controller {
     }
     public void clear_board(){
         model.clearBoard();
+    }
+    public int getBest(){
+        return model.calculateBest();
     }
 }

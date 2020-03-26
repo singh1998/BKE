@@ -43,7 +43,7 @@ public class BoardSetup extends Application {
                                 controller.nextTurn(peg);
                             } );
                         });
-                    gridPane.add(peg, peg.getXPosition(), peg.getZPosition());
+                    gridPane.add(peg, peg.getZPosition(), peg.getXPosition());
             }
         }
 

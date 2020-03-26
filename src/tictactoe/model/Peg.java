@@ -17,9 +17,9 @@ public class Peg extends Button {
     public Peg(int x, int z){
         this.x = x;
         this.z = z;
-        pegState = 0;
+        pegState = 2;
     }
-    private void setPegState(int pegState) { this.pegState = pegState; }
+    public void setPegState(int pegState) { this.pegState = pegState; }
     public int getPegState() { return pegState; }
     public int getXPosition() {
         return x;
@@ -37,7 +37,8 @@ public class Peg extends Button {
         imageView.setFitHeight(80);
         setGraphic(imageView);
         setDisable(true);
-        pegState = 0;
+        pegState=0;
+
     }
 
 
@@ -48,7 +49,7 @@ public class Peg extends Button {
         imageView.setFitHeight(80);
         setGraphic(imageView);
         setDisable(true);
-        pegState = 1;
+        pegState=1;
     }
     public void reset(){
         setGraphic(null);

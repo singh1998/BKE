@@ -7,9 +7,12 @@ import java.util.Random;
 public class Model
         //The tictactoe logic
 {
-    private TicTacToeAI AI=new TicTacToeAI(this);
+    private TicTacToeAI AI=new TicTacToeAI();
     private BoardSetup view;
-    private int turn = 0;
+    private Random random=new Random();
+
+    private int side=0;
+
     //gui board
     private Peg[][] pegs = new Peg[3][3];
 
@@ -20,17 +23,75 @@ public class Model
                 peg.setMinSize(100, 100);
                 pegs[i][o] = peg;
 
+
             }
         }
     }
 
-    public int nextTurn() {
+    public void initSide(){
 
-        int t = turn;
-        turn += 1;
-        return t;
+        if(mode==HUMAN_VS_AI){
+            side=random.nextInt(2);
+            player1_name="Player";
+            player2_name="Computer";
+            if(side==PLAYER2){
+                setText(player2_name+ "'s turn!");
+
+                int best=calculateBest();
+                Platform.runLater( ()-> {
+                    playMove(best);
+                });
+
+
+            }else{
+                setText(player1_name+ "'s turn!");
+            }
+        }
+        else if(mode==HUMAN_VS_SERVER){
+            //check who begins
+            //update names
+            //update side
+            //if side==opponent(player2): play the move on the model
+        }
+        else if(mode==AI_VS_SERVER){
+           play_ai_vs_server();
+
+        }
+        else if(mode==HUMAN_VS_HUMAN){
+            side=random.nextInt(2);
+            player1_name="Player";
+            player2_name="Guest";
+            if(side==PLAYER1){
+                setText(player1_name+ " 's turn!");
+            }
+            else {
+                setText(player2_name+ " 's turn!");
+            }
+        }
+        //nothing: game is idle
+        else{
+
+        }
+
     }
+    public void play_ai_vs_server(){
+        //update the names
+        //check who begins and update side
+        //while !gameover():
+        /*
+        if(side==PLAYER1)
+        //calculate best move
+        //play move on the server
+        //play move on model
+        playMove()
+        else
+        //receive move
+        play received move on model
+         */
+        //if game over: update winner label
 
+
+    }
 
     //Model
     public Model(BoardSetup view) {
@@ -41,16 +102,17 @@ public class Model
     }
 
     public void switch_gamemode(int gamemode){
+
         mode=gamemode;
         clearBoard();
-        turn=0;
+        //check if board can be enabled
         if(mode==IDLE || mode==AI_VS_SERVER){
             disable_pegs();
         }
         else {
             enable_pegs();
         }
-
+        initSide();
 
 
     }
@@ -58,9 +120,7 @@ public class Model
     public Peg[][] get_pegs() {
         return pegs;
     }
-    public TicTacToeAI getAI(){
-        return AI;
-    }
+
 
 
     private static final int PLAYER1        = 0;
@@ -69,8 +129,8 @@ public class Model
 
 
     //name to be logged in with
-    String player1_name;
-    String player2_name;
+    String player1_name="";
+    String player2_name="";
 
     public  static final int PLAYER1_WIN    = 0;
     public  static final int DRAW         = 1;
@@ -110,12 +170,36 @@ public class Model
     public boolean human_vs_server(){
         return mode==HUMAN_VS_SERVER;
     }
+    public int calculateBest(){
 
+        AI.pegs_to_board(pegs);
+        int best=AI.chooseMove();
+
+        return best;
+    }
 
     public void playMove(int move){
-        Peg peg=pegs[move/3 ][ move%3 ];
-        peg.setX();
 
+        Peg peg=pegs[move/3 ][ move%3 ];
+
+        if(side==PLAYER2){
+
+                peg.setX();
+
+
+        }
+        else {
+
+            peg.setO();
+        }
+
+        if (side==PLAYER1){
+            this.side=PLAYER2;
+            setText(player2_name+ "'s turn!");
+        }
+        else {this.side=PLAYER1;
+            setText(player1_name+ "'s turn!");
+        }
     }
 
 
@@ -133,7 +217,6 @@ public class Model
             }
         }
     }
-
 
     private boolean pegsIsFull( )
     {
@@ -218,16 +301,16 @@ public class Model
     private int positionValue( )
     {
 
-        boolean human_win=isAWin(PLAYER1);
-        boolean computer_win=isAWin(PLAYER2);
+        boolean player1_win=isAWin(PLAYER1);
+        boolean player2_win=isAWin(PLAYER2);
         boolean is_full=pegsIsFull();
-        if ((is_full && !computer_win) && (!human_win)){
+        if ((is_full && !player1_win) && (!player2_win)){
             return DRAW;
         }
-        else if(computer_win){
+        else if(player2_win){
             return PLAYER2_WIN;
         }
-        else if(human_win){
+        else if(player1_win){
             return PLAYER1_WIN;
         } else {
             return UNCLEAR;
@@ -237,10 +320,6 @@ public class Model
 
 
     }
-
-
-
-
 
 
 
@@ -258,7 +337,9 @@ public class Model
             }
         }
     }
-
+    public void setText(String text){
+        view.setText(text);
+    }
 
 
     public boolean gameOver()
@@ -268,9 +349,9 @@ public class Model
             Platform.runLater(()-> {
                 if (position == DRAW) {
 
-                    view.setText(" It's a draw, " + winner() + " wins!");
+                    setText(" It's a draw, " + winner() + " wins!");
                 } else {
-                    view.setText(" Match over, " + winner() + " wins!");
+                    setText(" Match over, " + winner() + " wins!");
                 }
             } );
         }
@@ -279,8 +360,8 @@ public class Model
 
     public String winner()
     {
-        if      (this.position==PLAYER1_WIN) return "Player 1";
-        else if (this.position==PLAYER2_WIN   ) return "Player 2";
+        if      (this.position==PLAYER1_WIN) return player1_name;
+        else if (this.position==PLAYER2_WIN   ) return player2_name;
         else                                  return "nobody";
     }
 
